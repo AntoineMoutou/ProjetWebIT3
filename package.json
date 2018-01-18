@@ -10,6 +10,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "socket.io": "^2.0.4",
     "vue": "^2.5.11",
     "vue2-leaflet": "0.0.58",
     "vuex": "^3.0.1"

@@ -26,6 +26,7 @@
       <label for="cbhistory">History</label>
       <input type="checkbox" id="cbhistory">
       <ul id="historylist" class="menulist">
+        <li @click=handleHistoryClick value="HistoryLast">Last prompt</li>
         <li @click=handleHistoryClick value="HistoryWeek">Last week</li>
         <li @click=handleHistoryClick value="HistoryMonth">Last month</li>
         <li @click=handleHistoryClick value="HistoryYear">Last year</li>
@@ -57,51 +58,92 @@ export default {
       return "cool";
     },
 
-
-
-
-
-
-
-
-
-
-
-
     handleMeasureClick: function(e){
       //changeB
       var val = e.target.attributes[0].value;
 
-      this.$store.commit("changeMeasure",val);
-      this.$store.commit("setMeasure",val);
+      if (val != this.$store.state.measure) {
+        this.$store.commit("changeMeasure",val);
+        this.$store.commit("setMeasure",val);
 
-      //add or remove data + update style
-      if (this.$store.state.b.measure[val]) {
-        this.$store.commit("addMeasure",val);
+        this.$store.commit("removeMeasure")
+        this.$store.commit("addMeasure");
         e.target.style.backgroundColor = "#999999";
       }
-      else{
-        this.$store.commit("removeMeasure",val);
-        e.target.style.backgroundColor = "#DDDDDD";
-      }
     },
-
-
-
-
-
-
-
-
-
-
-
-
 
     handleHistoryClick: function(e){
       //changeB
       var val = e.target.attributes[0].value;
-      this.$store.commit("changeHistory",val);
+
+      var period;
+      var param;
+
+      if (val == 'HistoryLast') {
+        period = "last";
+        param = '';
+      }
+      else if (val == "HistoryWeek") {
+        var stop = new Date();
+        var stopIso = stop.toISOString();
+
+        var time = stop.getTime() - 7 * 24 * 3600 * 1000;
+        var start = new Date(time);
+        var startIso = start.toISOString();
+
+        period = "interval";
+        param = "?start=" + startIso + '&stop=' + stopIso;
+
+      }
+      else if (val == "HistoryMonth") {
+        var stop = new Date();
+        var stopIso = stop.toISOString();
+
+        var month = stop.getMonth();
+        var year = stop.getYear();
+        console.log(year);
+        var start = new Date(stopIso);
+
+        if (month==0) {
+          start.setMonth(11);
+          start.setYear(year - 1 + 1900);
+        }
+        else{
+          start.setMonth(month -1);
+        }
+
+        var startIso = start.toISOString();
+
+        period = "interval";
+        param = "?start=" + startIso + '&stop=' + stopIso;
+      }
+      else if (val == "HistoryYear") {
+        var stop = new Date();
+        var stopIso = stop.toISOString();
+
+        var year = stop.getYear();
+        var start = new Date(stopIso);
+
+        start.setYear(year - 1 + 1900);
+    
+        var startIso = start.toISOString();
+
+        period = "interval";
+        param = "?start=" + startIso + '&stop=' + stopIso;
+      }
+
+      if (param != this.$store.state.param) {
+        this.$store.commit("changeHistory",val);
+        this.$store.commit('setPeriod', period);
+        this.$store.commit('setParam', param);
+
+        this.$store.commit("removeHistory")
+        this.$store.commit("addHistory");
+
+
+      }
+
+      
     }
   }
 }

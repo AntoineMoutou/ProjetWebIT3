@@ -46,6 +46,7 @@ const store = new Vuex.Store({
         rainfall     : false
       },
       history:{
+        HisoryLast  : true,
         HistoryWeek  : false, // try time var with computed value
         HistoryMonth : false,
         HistoryYear  : false
@@ -53,7 +54,10 @@ const store = new Vuex.Store({
     },
     
     measure : '',
-    period : "last"
+    start : '',
+    stop : '',
+    period : "last",
+    param :'',
 	},
 	mutations:{
 
@@ -66,22 +70,26 @@ const store = new Vuex.Store({
       state.b.measure.measurements = false;
       state.b.measure.rainfall     = false;
 
-      state.b.measure[measureName] = !state.b.measure[measureName];
+      state.b.measure[measureName] = true;
 
       console.log(state.b.measure.all,state.b.measure.location,state.b.measure.measurements,state.b.measure.rainfall);
     },
     changeHistory(state,historyName){
-      state.b.measure.HistoryWeek  = false;
-      state.b.measure.HistoryMonth = false;
-      state.b.measure.HistoryYear  = false;
+      state.b.history.HistoryLast  = false;
+      state.b.history.HistoryWeek  = false;
+      state.b.history.HistoryMonth = false;
+      state.b.history.HistoryYear  = false;
 
-      state.b.history[historyName] = !state.b.probe.history[historyName];
+      state.b.history[historyName] = !state.b.history[historyName];
     },
     setMeasure(state,AttribName){
       state.measure = AttribName;
     },
     setPeriod(state,thing){
-
+      state.period = thing;
+    },
+    setParam(state,thing){
+      state.param = thing;
     },
     addProbe(state,AttribName){
       var newJson = 
@@ -89,7 +97,7 @@ const store = new Vuex.Store({
         probeId:AttribName
       };
 
-      var url = state.probesList[AttribName] + state.period + '/' + state.measure;
+      var url = state.probesList[AttribName] + state.period + '/' + state.measure + state.param;
 
       console.log(url)
 
@@ -111,34 +119,61 @@ const store = new Vuex.Store({
         }
       }
     },
-    addMeasure(state,AttribName){
+    addMeasure(state){
       var len = state.dataJson.probes.length;
       for (let i = 0 ; i < len; i++) {
-        console.log(state.dataJson.probes[i][AttribName]);
-        if (state.dataJson.probes[i][AttribName] == undefined) {
-          var url = state.probesList[state.dataJson.probes[i].probeId] + state.period + '/' + state.measure; //to check
+        console.log("ICICICICICICIC", state.dataJson.probes[i].probeId);
+        var url = state.probesList[state.dataJson.probes[i].probeId] + state.period + '/' + state.measure + state.param; //to check
+      
+        console.log(url);
         
-          console.log(url);
-          
-          fetch(url)
-          .then(result => result.json())
-          .then(function (result) {
-            Object.assign(state.dataJson.probes[i],result);
-          })
-        }
-
-        
+        fetch(url)
+        .then(result => result.json())
+        .then(function (result) {
+          Object.assign(state.dataJson.probes[i],result);
+        })
       }
-      console.log(state.dataJson.probes);
+      console.log("addMeasure", state.dataJson.probes);
     },
-    removeMeasure(state,AttribName){
+    removeMeasure(state){
       for (let i = state.dataJson.probes.length - 1; i >= 0; i--) {
-        if(state.dataJson.probes[i].probeId == AttribName){
-          console.log("coooool");
-          delete state.dataJson.probes[i][AttribName];
+        var myObject = Object.keys(state.dataJson.probes[i]);
+        for (let j = 0; j < myObject.length; j++) {
+          if (myObject[j] != state.measure && myObject[j] != "probeId"){
+            console.log("coooool");
+            delete state.dataJson.probes[i][myObject[j]];
+          }
         }
       }
-      console.log(state.dataJson.probes);
+      console.log("removeMeasure", state.dataJson.probes);
+    },
+    addHistory(state){ //TODO
+      var len = state.dataJson.probes.length;
+      for (let i = 0 ; i < len; i++) {
+        var url = state.probesList[state.dataJson.probes[i].probeId] + state.period + '/' + state.measure + state.param; //to check
+      
+        console.log(url);
+        
+        fetch(url)
+        .then(result => result.json())
+        .then(function (result) {
+          Object.assign(state.dataJson.probes[i],result);
+        })
+       
+      }
+      console.log("addHistory", state.dataJson.probes);
+    },
+    removeHistory(state,AttribName){ //TODO
+      for (let i = state.dataJson.probes.length - 1; i >= 0; i--) {
+        var myObject = Object.keys(state.dataJson.probes[i]);
+        for (let j = 0; j < myObject.length; j++) {
+          if (myObject[j] != "probeId"){
+            console.log("coooool");
+            delete state.dataJson.probes[i][myObject[j]];
+          }
+        }
+      }
+      console.log("removeHistory", state.dataJson.probes);
     },
     other(state){
 
