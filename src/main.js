@@ -54,8 +54,6 @@ const store = new Vuex.Store({
     },
     
     measure : '',
-    start : '',
-    stop : '',
     period : "last",
     param :'',
 	},

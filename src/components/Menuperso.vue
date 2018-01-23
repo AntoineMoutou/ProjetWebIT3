@@ -54,9 +54,6 @@ export default {
         e.target.style.backgroundColor = "#DDDDDD";
       }
     },
-    styleProbe: function() {
-      return "cool";
-    },
 
     handleMeasureClick: function(e){
       //changeB
@@ -101,7 +98,6 @@ export default {
 
         var month = stop.getMonth();
         var year = stop.getYear();
-        console.log(year);
         var start = new Date(stopIso);
 
         if (month==0) {

@@ -1,16 +1,30 @@
 <template>
   <div id="timeperso">
-    <p>Bonjour ici ce sera la date et la période !</p>
+    <p>Time</p>
+    <p>{{writeTime}}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'timeperso',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+  computed:{
+    writeTime: function() {
+      if (this.$store.state.period == "last") {
+        var tmp = new Date();
+        return tmp.toString();
+      } 
+      else {
+        var start = new Date( this.$store.state.param.split("=")[1].split('&')[0]);
+        var stop  = new Date( this.$store.state.param.split("=")[2]);
+
+        console.log(this.$store.state.param);
+        console.log(stop);
+        console.log(start);
+
+        return "From " + start + "\n" + " to " + stop;
+      }
+    },
   }
 }
 </script>
@@ -18,8 +32,8 @@ export default {
 <style>
   #timeperso{
   	width: 400px;
-  	height: 300px;
-  	background-color: purple;
+  	height: 100px;
+  	background-color: lightblue;
   }
   
 </style>
