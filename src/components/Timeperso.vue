@@ -18,10 +18,6 @@ export default {
         var start = new Date( this.$store.state.url.param.split("=")[1].split('&')[0]);
         var stop  = new Date( this.$store.state.url.param.split("=")[2]);
 
-        console.log(this.$store.state.url.param);
-        console.log(stop);
-        console.log(start);
-
         return "From " + start + "\n" + " to " + stop;
       }
     },
