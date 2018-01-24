@@ -19,22 +19,44 @@ const Vmarker = Vue.component('v-marker', Vue2Leaflet.Marker);
 const store = new Vuex.Store({
 	state:{
 
+    //CONSTANT TABS
     PROBELIST   : ["Probe1","Probe2","Probe3","Probe4","Probe5"],
     MEASURELIST : ["location","measurements","rainfall"],
     HISTORYLIST : ["HistoryLast","HistoryWeek","HistoryMonth","HistoryYear"],
-
-    //the main data object
-    dataJson : {"probes":[]},
-
-    //probe adress list 
-    probesAdressList : 
-    {
+    PROBESADRESSLIST :{
       Probe1 : "http://172.31.58.20:3000/",
       Probe2 : "http://172.31.58.22:3000/",
       Probe3 : "http://path/to/probe/3/",
       Probe4 : "http://path/to/probe/4/",
       Probe5 : "http://path/to/probe/5/",
     },
+
+    //the main data object
+    dataJson : {"probes":[]},
+
+    //the markers list
+    markers:{
+        Probe1:{
+          position : { lng:5.3, lat: 46.2},
+          visible : false
+        },
+        Probe2:{
+          position : { lng:5.3, lat: 46.2},
+          visible : false
+        },
+        Probe3:{
+          position : { lng:5.3, lat: 46.2},
+          visible : false
+        },
+        Probe4:{
+          position : { lng:5.3, lat: 46.2},
+          visible : false
+        },
+        Probe5:{
+          position : { lng:5.3, lat: 46.2},
+          visible : false
+        }         
+      },
 
     //selected elements list (with default config)
     selProbe   : [],
@@ -47,158 +69,215 @@ const store = new Vuex.Store({
       period  : "last",
       param   : ""
     }
-	},
+	},mutations:{
+    SET_DATAJSON(state, newData){ //a revoir
+      state.dataJson = newData;
+    },
+    SET_MARKERS(state, newData){
+      state.markers = newData;
+    },
+    SET_SELPROBE(state,newList){
+      state.selProbe = newList;
+    },
+    SET_SELMEASURE(state,newList){
+      state.selMeasure = newList;
+    },
+    SET_SELHISTORY(state,newHistory){
+      state.selHistory = newHistory;
+    },
+    SET_URL_MEASURE(state,newMeasure){
+      state.url.measure = newMeasure;
+    },
+    SET_URL_PERIOD(state,newPeriod){
+      state.url.period = newPeriod;
+    },
+    SET_URL_PARAM(state,newParam){
+      state.url.param = newParam;
+    },
+  },
 	actions:{
 
 		updateSelProbe({commit,state},probeName){
+      //init new selProbe
+      var newList = state.selProbe;
 
       //ProbeAll specific case
       if (probeName == "ProbeAll") {
-        if (state.selProbe.includes(probeName)) {
+        if (newList.includes(probeName)) {
           //delete all probes
-          state.selProbe = [];
+          newList = [];
         } 
         else{
           //add all probes
-          state.selProbe = ["ProbeAll", "Probe1", "Probe2", "Probe3", "Probe4", "Probe5"];
+          newList = ["ProbeAll", "Probe1", "Probe2", "Probe3", "Probe4", "Probe5"];
         }
       }
       //general case
       else{
-        if (state.selProbe.includes(probeName)) {
+        if (newList.includes(probeName)) {
           //delete the chosen probe
-          var idel = state.selProbe.indexOf(probeName);
-          state.selProbe.splice(idel,1);
+          var idel = newList.indexOf(probeName);
+          newList.splice(idel,1);
           
           //delete "ProbeAll" if it's in the list
-          if (state.selProbe.includes("ProbeAll")) {
-            idel = state.selProbe.indexOf("ProbeAll");
-            state.selProbe.splice(idel,1);
+          if (newList.includes("ProbeAll")) {
+            idel = newList.indexOf("ProbeAll");
+            newList.splice(idel,1);
           }
         } 
         else{
           //add the chosen probe
-          state.selProbe.push(probeName);
+          newList.push(probeName);
         }
       }
 
-      console.log("---------- changeProbe done ----------");
+      store.commit("SET_SELPROBE",newList);
 
+      console.log("---------- updateSelProbe done ----------");
     },
     updateSelMeasure({commit,state},measureName){
+      //init new selMeasure
+      var newList = state.selMeasure;
 
       //MeasureAll specific case
       if (measureName == "MeasureAll") {
-        if (state.selMeasure.includes(measureName)) {
+        if (newList.includes(measureName)) {
           //delete all measures
-          state.selMeasure = [];
+          newList = [];
         } 
         else{
           //add all measures
-          state.selMeasure = ["MeasureAll", "location", "measurements", "rainfall"];
+          newList = ["MeasureAll", "location", "measurements", "rainfall"];
         }
       }
       //general case
       else{
-        if (state.selMeasure.includes(measureName)) {
+        if (newList.includes(measureName)) {
           //delete the chosen measure
-          var idel = state.selMeasure.indexOf(measureName);
-          state.selMeasure.splice(idel,1);
+          var idel = newList.indexOf(measureName);
+          newList.splice(idel,1);
 
           //delete "MeasureAll" if it's in the list
-          if (state.selMeasure.includes("MeasureAll")) {
-            idel = state.selMeasure.indexOf("MeasureAll");
-            state.selMeasure.splice(idel,1);
+          if (newList.includes("MeasureAll")) {
+            idel = newList.indexOf("MeasureAll");
+            newList.splice(idel,1);
           }
         } 
         else{
           //add the chosen measure
-          state.selMeasure.push(measureName);
+          newList.push(measureName);
         }
       }
 
-      console.log("---------- changeMeasure done----------");    
+      store.commit("SET_SELMEASURE",newList);
+
+      console.log("---------- updateSelMeasure done----------");    
     },
     updateSelHistory({commit,state},historyName){
 
       //general and only case
-      state.selHistory = historyName;
+      var newHistory = historyName;
 
-      console.log("---------- changeHistory done ----------");
+      store.commit("SET_SELHISTORY",newHistory);
+
+      console.log("---------- updateSelHistory done ----------");
     },
 
     setUrlMeasure({commit,state},measureName){
 
-      if (measureName == "MesureAll") {
-        state.url.measure = "";
-      }
-      else{
-        state.url.measure = measureName;
-      }
+      return new Promise((resolve,reject) =>{
 
-      console.log("---------- setUrlMeasure done ----------");
+        if (measureName == "MesureAll") {
+          store.commit("SET_URL_MEASURE", "");
+        }
+        else{
+          store.commit("SET_URL_MEASURE", measureName);
+        }
+
+        console.log("---------- setUrlMeasure done ----------");
+
+        resolve(measureName);
+
+      })
     },
     setUrlPeriod({commit,state},historyName){
 
-      if (historyName == "HistoryLast") {
-        state.url.period = "last";
-      }
-      else{
-        state.url.period = "interval";
-      }
+      return new Promise((resolve,reject) =>{
 
-      console.log("---------- setUrlPeriod done ----------");
-    },
-    setUrlParam({commit,state},historyName){
-      if (historyName == "HistoryLast") {
-        state.url.param = "";
-      }
-      else if (historyName == "HistoryWeek") {
-        var stop = new Date();
-        var stopIso = stop.toISOString();
-
-        var time = stop.getTime() - 7 * 24 * 3600 * 1000;
-        var start = new Date(time);
-        var startIso = start.toISOString();
-
-        state.url.param = "?start=" + startIso + '&stop=' + stopIso;
-
-      }
-      else if (historyName == "HistoryMonth") {
-        var stop = new Date();
-        var stopIso = stop.toISOString();
-
-        var month = stop.getMonth();
-        var year = stop.getYear();
-        var start = new Date(stopIso);
-
-        if (month==0) {
-          start.setMonth(11);
-          start.setYear(year - 1 + 1900);
+        if (historyName == "HistoryLast") {
+          store.commit("SET_URL_PERIOD", "last");
         }
         else{
-          start.setMonth(month -1);
+          store.commit("SET_URL_PERIOD", "interval");
         }
 
-        var startIso = start.toISOString();
+        console.log("---------- setUrlPeriod done ----------");
 
-        state.url.param = "?start=" + startIso + '&stop=' + stopIso;
-      }
-      else if (historyName == "HistoryYear") {
-        var stop = new Date();
-        var stopIso = stop.toISOString();
+        resolve(historyName);
 
-        var year = stop.getYear();
-        var start = new Date(stopIso);
+      })
+    },
+    setUrlParam({commit,state},historyName){
 
-        start.setYear(year - 1 + 1900);
-    
-        var startIso = start.toISOString();
+      return new Promise((resolve,reject) =>{
 
-        state.url.param = "?start=" + startIso + '&stop=' + stopIso;
-      }
+        var newParam = "";
 
-      console.log("---------- setUrlParam done ----------");
+        if (historyName == "HistoryLast") {
+          newParam = "";
+        }
+        else if (historyName == "HistoryWeek") {
+          var stop = new Date();
+          var stopIso = stop.toISOString();
+
+          var time = stop.getTime() - 7 * 24 * 3600 * 1000;
+          var start = new Date(time);
+          var startIso = start.toISOString();
+
+          newParam = "?start=" + startIso + '&stop=' + stopIso;
+
+        }
+        else if (historyName == "HistoryMonth") {
+          var stop = new Date();
+          var stopIso = stop.toISOString();
+
+          var month = stop.getMonth();
+          var year = stop.getYear();
+          var start = new Date(stopIso);
+
+          if (month==0) {
+            start.setMonth(11);
+            start.setYear(year - 1 + 1900);
+          }
+          else{
+            start.setMonth(month -1);
+          }
+
+          var startIso = start.toISOString();
+
+          newParam = "?start=" + startIso + '&stop=' + stopIso;
+        }
+        else if (historyName == "HistoryYear") {
+          var stop = new Date();
+          var stopIso = stop.toISOString();
+
+          var year = stop.getYear();
+          var start = new Date(stopIso);
+
+          start.setYear(year - 1 + 1900);
+      
+          var startIso = start.toISOString();
+
+          newParam = "?start=" + startIso + '&stop=' + stopIso;
+        }
+
+        store.commit("SET_URL_PARAM",newParam);
+
+        console.log("---------- setUrlParam done ----------");
+
+        resolve(historyName);
+
+      })
     },
 
     addProbe({commit,state},probeName){
@@ -215,59 +294,62 @@ const store = new Vuex.Store({
         }
         // use measure all request
         else if (state.url.measure == ""){
-          var newJson = 
-          {
-            probeId:probeName
-          };
 
-          var url = state.probesAdressList[probeName] + state.url.period + '/' + state.url.measure + state.url.param;
+          var newProbe = {probeId:probeName};
+          var newDataJson = state.dataJson;
 
+          var url = state.PROBESADRESSLIST[probeName] + state.url.period + '/' + state.url.measure + state.url.param;
+          
           console.log("---------- URL : " + url + " ----------");
-
+          
           fetch(url)
           .then(result => result.json())
           .then(function (result) {
-            var obj  = Object.assign(newJson,result);
 
-            state.dataJson.probes.push(obj);
+            console.log(result);
+
+            var obj = Object.assign(newProbe,result);
+
+            newDataJson.push(obj);
             
-            console.log(state.dataJson.probes);
+            store.commit("SET_DATAJSON",newDataJson);
+
+            //console.log(state.dataJson.probes);
 
             console.log("---------- addProbe done ----------");
           })
         }
-        else{
-          //use different measure request
-          var newJson = 
-          {
-            probeId:probeName
-          };
+        //use different measure request
+        else{  
 
-          for (var i = 0; i < state.selMeasure.length; i++) {
+          var newProbe = {probeId:probeName};
+          var newDataJson = state.dataJson;
+
+          for (let i = 0; i < state.selMeasure.length; i++) {
             var tmpMeasure = state.selMeasure[i];
 
             if (tmpMeasure != "MeasureAll") {
               //init the url for the fetch
-              var url = state.probesAdressList[probeName] + state.url.period + '/' + tmpMeasure + state.url.param;
+              var url = state.PROBESADRESSLIST[probeName] + state.url.period + '/' + tmpMeasure + state.url.param;
 
               console.log("---------- URL : " + url + " ----------");
 
               fetch(url)
               .then(result => result.json())
               .then(function (result) {
-                 newJson = Object.assign(newJson,result);
-
                 
-                
-                console.log(state.dataJson.probes);
+                console.log(result);
 
-                console.log("---------- addProbe done ----------");
+                var newProbe = Object.assign(newProbe,result);
               })
             }  
           }
 
-          state.dataJson.probes.push(newJson);
+          newDataJson.push(newProbe);
 
+          //console.log(state.dataJson.probes);
+
+          console.log("---------- addProbe done ----------");
         }
         resolve(probeName);
       });
@@ -309,13 +391,14 @@ const store = new Vuex.Store({
 
             console.log(state.dataJson.probes[i]);
 
-            var url = state.probesAdressList[state.dataJson.probes[i].probeId] + state.url.period + '/' + measureName + state.url.param; //to check
+            var url = state.PROBESADRESSLIST[state.dataJson.probes[i].probeId] + state.url.period + '/' + measureName + state.url.param; //to check
           
             console.log("---------- URL : " + url + " ----------");
             
             fetch(url)
             .then(result => result.json())
             .then(function (result) {
+              console.log(result);
               Object.assign(state.dataJson.probes[i],result);
 
               console.log(state.dataJson.probes);
@@ -383,20 +466,56 @@ const store = new Vuex.Store({
       console.log("---------- removeHistory done ----------");
     },
 
+    updateMarkers({commit,state}){
+
+     // return new Promise((resolve,reject) =>{
+
+        state.markers.Probe1.visible = false;
+        state.markers.Probe2.visible = false;
+        state.markers.Probe3.visible = false;
+        state.markers.Probe4.visible = false;
+        state.markers.Probe5.visible = false;
+        
+
+        if (state.selMeasure.includes("location")) {
+          for (let i = 0; i < state.dataJson.probes.length; i++) {
+            console.log("i",i);
+            var id = state.dataJson.probes[i].probeId;
+            console.log("id",id);
+            console.log(state.dataJson.probes);
+            var lastLocation = state.dataJson.probes[i].location["0"];
+
+            console.log("lastLocation",lastLocation);
+            console.log(state.dataJson.probes);
+
+            state.markers[id].visible = true;
+
+            
+
+            state.markers[id].position.lat = lastLocation.latitude;
+            state.markers[id].position.lng = lastLocation.longitude;
+          }
+        }
+
+        console.log("---------- updateMarkers done ----------");
+
+     // });
+    },
+
     updateProbe({commit,state},probeName){
 
       if (state.selProbe.includes(probeName)) {
         store.dispatch("removeProbe", probeName)
         .then(probeName => store.dispatch("updateSelProbe", probeName))
-        .then(console.log("---------- updateProbe done ----------"));
+        .then(console.log("---------- updateProbe done ----------"))
+        .then(()=>store.dispatch("updateMarkers"));
       }
       else{
         store.dispatch("addProbe", probeName)
         .then(probeName => store.dispatch("updateSelProbe", probeName))
-        .then(console.log("---------- updateProbe done ----------"));
-      }
-
-      
+        .then(console.log("---------- updateProbe done ----------"))
+        .then(()=>store.dispatch("updateMarkers"));
+      }   
     },
     updateMeasure({commit,state},measureName){
       console.log("coooooooooooooooool");
@@ -404,14 +523,16 @@ const store = new Vuex.Store({
 
       if (state.selMeasure.includes(measureName)) {
         store.dispatch("removeMeasure", measureName)
-        .then(measureName => store.dispatch("updateSelMeasure",measureName));
+        .then(measureName => store.dispatch("updateSelMeasure",measureName))
+        .then(console.log("---------- updateMeasure done ----------"))
+        .then(()=>store.dispatch("updateMarkers"));
       }
       else {
         store.dispatch("addMeasure",measureName)
-        .then(measureName => store.dispatch("updateSelMeasure",measureName));
+        .then(measureName => store.dispatch("updateSelMeasure",measureName))
+        .then(console.log("---------- updateMeasure done ----------"))
+        .then(()=>store.dispatch("updateMarkers"));
       }
-
-      console.log("---------- updateMeasure done ----------");
     },
     updateHistory({commit,state},historyName){
 
