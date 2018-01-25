@@ -7,6 +7,8 @@ import Mapperso from './components/Mapperso'
 import Chartperso from './components/Chartperso'
 import Timeperso from './components/Timeperso'
 
+require("./style.css");
+
 
 //init vuex
 Vue.use(Vuex);
@@ -21,7 +23,7 @@ const store = new Vuex.Store({
 
     dataJson : {"probes":[]},
 
-    probesList : 
+    probesList :
     {
       Probe1 : "http://172.31.58.20:3000/",
       Probe2 : "http://172.31.58.22:3000/",
@@ -52,7 +54,7 @@ const store = new Vuex.Store({
         HistoryYear  : false
       }
     },
-    
+
     measure : '',
     period : "last",
     param :'',
@@ -90,7 +92,7 @@ const store = new Vuex.Store({
       state.param = thing;
     },
     addProbe(state,AttribName){
-      var newJson = 
+      var newJson =
       {
         probeId:AttribName
       };
@@ -105,7 +107,7 @@ const store = new Vuex.Store({
         var obj = Object.assign(newJson,result);
 
         state.dataJson.probes.push(obj);
-        
+
         console.log(state.dataJson.probes);
       })
     },
@@ -122,9 +124,9 @@ const store = new Vuex.Store({
       for (let i = 0 ; i < len; i++) {
         console.log("ICICICICICICIC", state.dataJson.probes[i].probeId);
         var url = state.probesList[state.dataJson.probes[i].probeId] + state.period + '/' + state.measure + state.param; //to check
-      
+
         console.log(url);
-        
+
         fetch(url)
         .then(result => result.json())
         .then(function (result) {
@@ -149,15 +151,15 @@ const store = new Vuex.Store({
       var len = state.dataJson.probes.length;
       for (let i = 0 ; i < len; i++) {
         var url = state.probesList[state.dataJson.probes[i].probeId] + state.period + '/' + state.measure + state.param; //to check
-      
+
         console.log(url);
-        
+
         fetch(url)
         .then(result => result.json())
         .then(function (result) {
           Object.assign(state.dataJson.probes[i],result);
         })
-       
+
       }
       console.log("addHistory", state.dataJson.probes);
     },

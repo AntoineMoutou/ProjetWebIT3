@@ -1,8 +1,8 @@
 <template>
   <div id="menuperso">
     <div id="probe" class="menubox">
-      <label for="cbprobe">Probe</label>
       <input type="checkbox" id="cbprobe">
+      <label for="cbprobe">Probe</label>
       <ul id="probelist" class="menulist">
         <li @click=handleProbeClick value="ProbeAll">All</li>
         <li @click=handleProbeClick value="Probe1">Probe 01</li>
@@ -13,8 +13,8 @@
       </ul>
     </div>
     <div id="measure" class="menubox">
-      <label for="cbmeasure">Measure</label>
       <input type="checkbox" id="cbmeasure">
+      <label for="cbmeasure">Measure</label>
       <ul id="measurelist" class="menulist">
         <li @click=handleMeasureClick value="">All</li>
         <li @click=handleMeasureClick value="location">Location</li>
@@ -23,8 +23,8 @@
       </ul>
     </div>
     <div id="history" class="menubox">
-      <label for="cbhistory">History</label>
       <input type="checkbox" id="cbhistory">
+      <label for="cbhistory">History</label>
       <ul id="historylist" class="menulist">
         <li @click=handleHistoryClick value="HistoryLast">Last prompt</li>
         <li @click=handleHistoryClick value="HistoryWeek">Last week</li>
@@ -121,7 +121,7 @@ export default {
         var start = new Date(stopIso);
 
         start.setYear(year - 1 + 1900);
-    
+
         var startIso = start.toISOString();
 
         period = "interval";
@@ -139,7 +139,7 @@ export default {
 
       }
 
-      
+
     }
   }
 }
@@ -147,56 +147,81 @@ export default {
 
 <style>
 
-  #menuperso,#menubox,ul,li{
-    margin:0px;
-    padding: 0px;
-  }
-
-  input{
-    display:none;
-  }
-
   #menuperso{
+    width: 100%;
+    height: 40px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-
-    background-color: #DDDDDD;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    background: #4CAF50;
+    color: #EEE;
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2);
+    z-index: 99999999999;
   }
 
   .menubox{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    margin-right: 10px;
-    margin-left: 10px;
-
+    position: relative;
+    height: auto;
     width: 150px;
-
-  }
-
-  .menulist{
-    display: none;
-  }
-
-  #cbprobe:checked + .menulist, #cbmeasure:checked + .menulist, #cbhistory:checked + .menulist{
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 99999999999;
+  }
 
+  .menubox label {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+  }
+  .menubox label:hover {
+    background: #43A047;
+    box-shadow: inset 2px 0 0 rgba(0,0,0,0.05), inset -2px 0 0 rgba(255,255,255,0.1);
+  }
+
+  .menulist {
+    position: absolute;
+    top: 100%;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #4CAF50;
+    display: none;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  input[type="checkbox"]:checked + label {
+    background-color: #388E3C;
+    box-shadow: inset 2px 0 0 rgba(0,0,0,0.05), inset -2px 0 0 rgba(255,255,255,0.1);
+  }
+
+  input[type="checkbox"]:checked ~ .menulist {
+    display: flex;
   }
 
   li{
+    margin: 0;
+    padding: 5px 0;
+    background: #4CAF50;
     list-style: none;
     width: 100%;
+    text-align: center;
+    cursor: pointer;
   }
 
   li:hover{
-    background-color: #BBBBBB;
+    background-color: #388E3C;
   }
 
 </style>
