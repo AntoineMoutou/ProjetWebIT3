@@ -295,7 +295,8 @@ const store = new Vuex.Store({
         // use measure all request
         else if (state.url.measure == ""){
 
-          var newProbe = {probeId:probeName};
+          var newProbe = {probeId:probeName,location:[],measurements:[],rainfall:[]};
+
           var newDataJson = state.dataJson;
 
           var url = state.PROBESADRESSLIST[probeName] + state.url.period + '/' + state.url.measure + state.url.param;
@@ -308,13 +309,15 @@ const store = new Vuex.Store({
 
             console.log(result);
 
-            var obj = Object.assign(newProbe,result);
+            newProbe.location.push(result.location);
+            newProbe.measurements.push(result.measurements);
+            newProbe.rainfall.push(result.rainfall);
 
-            newDataJson.push(obj);
+            state.dataJson.probes.push(newProbe);
             
-            store.commit("SET_DATAJSON",newDataJson);
+            //store.commit("SET_DATAJSON",newDataJson);
 
-            //console.log(state.dataJson.probes);
+            console.log(state.dataJson.probes);
 
             console.log("---------- addProbe done ----------");
           })
@@ -322,7 +325,8 @@ const store = new Vuex.Store({
         //use different measure request
         else{  
 
-          var newProbe = {probeId:probeName};
+          var newProbe = {probeId:probeName,location:[],measurements:[],rainfall:[]};
+
           var newDataJson = state.dataJson;
 
           for (let i = 0; i < state.selMeasure.length; i++) {
@@ -340,16 +344,27 @@ const store = new Vuex.Store({
                 
                 console.log(result);
 
-                newProbe = Object.assign(newProbe,result);
+                // newProbe = Object.assign(newProbe,result);
+
+                // var len = state.dataJson.probes.length;
+
+                // state.dataJson.probes[len-1] = Object.assign({},state.dataJson.probes[-1],result);
+                
+                newProbe[tmpMeasure].push(result[tmpMeasure]);
+
               })
             }  
           }
 
-          newDataJson.push(newProbe);
+          state.dataJson.probes.push(newProbe);
 
-          store.commit("SET_DATAJSON",newDataJson);
+          // newDataJson.push(newProbe);
 
-          //console.log(state.dataJson.probes);
+          // var newData = JSON.parse(JSON.stringify(newDataJson));
+
+          // store.commit("SET_DATAJSON",newData);
+
+          console.log(state.dataJson.probes);
 
           console.log("---------- addProbe done ----------");
         }
@@ -364,20 +379,23 @@ const store = new Vuex.Store({
 
         //ProbeAll specific case
         if (probeName == "ProbeAll"){
-          newDataJson = {"probes":[]};
+          state.dataJson = {"probes":[]};
+
         }
         // general case
         else{
           for (let i = 0; i < newDataJson.probes.length; i++) {
             if (newDataJson.probes[i].probeId == probeName) {
-              newDataJson.probes.splice(i,1);
+              state.dataJson.probes.splice(i,1);
             }
           }
         }
+        
+        // var newData = JSON.parse(JSON.stringify(newDataJson));
 
-        store.commit("SET_DATAJSON",newDataJson);
+        // store.commit("SET_DATAJSON",newData);
 
-        //console.log(state.dataJson.probes);
+        console.log(state.dataJson.probes);
 
         console.log("---------- removeProbe done ----------");
 
@@ -417,9 +435,11 @@ const store = new Vuex.Store({
             })
           }
 
-          store.commit("SET_DATAJSON",newDataJson);
+          var newData = JSON.parse(JSON.stringify(newDataJson));
 
-          //console.log(state.dataJson.probes);
+          store.commit("SET_DATAJSON",newData);
+
+          console.log(state.dataJson.probes);
 
           console.log("---------- addMeasure done ----------");
         }
@@ -446,9 +466,11 @@ const store = new Vuex.Store({
           }
         }
 
-        store.commit("SET_DATAJSON",newDataJson);
+        var newData = JSON.parse(JSON.stringify(newDataJson));
 
-        //console.log(state.dataJson.probes);
+        store.commit("SET_DATAJSON",newData);
+
+        console.log(state.dataJson.probes);
 
         console.log("---------- removeMeasure done ----------");
 
@@ -465,7 +487,7 @@ const store = new Vuex.Store({
           }
         })
 
-        //console.log(state.dataJson.probes);
+        console.log(state.dataJson.probes);
 
         console.log("---------- addHistory done ----------");
 
@@ -482,7 +504,11 @@ const store = new Vuex.Store({
           newDataJson.probes[i] = {probeId:newDataJson.probes[i].probeId};
         }
 
-        //console.log(state.dataJson.probes);
+        var newData = JSON.parse(JSON.stringify(newDataJson));
+
+        store.commit("SET_DATAJSON",newData);
+
+        console.log(state.dataJson.probes);
 
         console.log("---------- removeHistory done ----------");
 
@@ -514,6 +540,8 @@ const store = new Vuex.Store({
 
             //console.log("lastLocation",lastLocation);
             //console.log(state.dataJson.probes);
+
+            console.log(newMarkers,id);
 
             newMarkers[id].visible = true;
 
@@ -559,7 +587,7 @@ const store = new Vuex.Store({
           return store.dispatch("addMeasure",measureName);
         }
       })
-      .then(measureName=>store.dispatch("updateSelMeasure", probeName))
+      .then(measureName=>store.dispatch("updateSelMeasure", measureName))
       .then(console.log("---------- updateMeasure done ----------"))
       .then(()=>store.dispatch("updateMarkers"));
     },
