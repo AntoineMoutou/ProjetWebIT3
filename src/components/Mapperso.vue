@@ -35,7 +35,7 @@ export default {
         Probe5:{
           position : { lng:5.3, lat: 46.2},
           visible : false
-        }         
+        }
       }
     }
   },
@@ -69,17 +69,24 @@ export default {
     }
   },
   methods:{
-  	
+
   }
 }
 </script>
 
 <style>
-  #mapperso, #mapContainer{
-  	width: 400px;
-  	height: 300px;
+  #mapperso {
+    width: 100%;
+    height: auto;
+    flex-grow: 1;
+    z-index: 5;
+  }
+
+  #mapContainer{
+  	width: 100%;
+  	height: 100%;
   }
 
   @import "../leaflet/leaflet.css";
-  
+
 </style>

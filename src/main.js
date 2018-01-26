@@ -7,6 +7,8 @@ import Mapperso from './components/Mapperso'
 import Chartperso from './components/Chartperso'
 import Timeperso from './components/Timeperso'
 
+require("./style.css");
+
 
 //init vuex
 Vue.use(Vuex);
@@ -373,6 +375,7 @@ const store = new Vuex.Store({
     },
     removeProbe({commit,state},probeName){
 
+
       return new Promise((resolve,reject) =>{
 
         var newDataJson = state.dataJson;
@@ -448,6 +451,7 @@ const store = new Vuex.Store({
 
       });  
     },
+
     removeMeasure({commit,state},measureName){
 
       return new Promise((resolve,reject) =>{
@@ -469,7 +473,6 @@ const store = new Vuex.Store({
             // delete newDataJson.probes[i][measureName];
             while (state.dataJson.probes[i][measureName]>0)
               {state.dataJson.probes[i][measureName].pop()}
-
           }
         }
 
@@ -484,6 +487,7 @@ const store = new Vuex.Store({
         resolve(measureName);
       });
     },
+
     addHistory({commit,state},historyName){ //to do check promises
 
       return new Promise((resolve,reject) =>{
