@@ -40,7 +40,7 @@ export default {
   name: 'menuperso',
   methods:{
     handleProbeClick: function(e){
-      
+
       //the value of the clicked box
       var val = e.target.attributes[0].value;
 
@@ -57,7 +57,7 @@ export default {
       //changeB
       var val = e.target.attributes[0].value;
 
-      this.$store.dispatch("updateHistory",val);      
+      this.$store.dispatch("updateHistory",val);
 
     }
   }
@@ -76,9 +76,9 @@ export default {
     margin: 0;
     padding: 0;
     background: #4CAF50;
-    color: #EEE;
+    color: #fafafa;
     box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2);
-    z-index: 99999999999;
+    z-index: 999999999;
   }
 
   .menubox{
@@ -89,7 +89,7 @@ export default {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    z-index: 99999999999;
+    z-index: 999999999;
   }
 
   .menubox label {
@@ -98,6 +98,7 @@ export default {
     display: flex;
     flex-flow: column;
     justify-content: center;
+    font-weight: bold;
     text-align: center;
     cursor: pointer;
   }
