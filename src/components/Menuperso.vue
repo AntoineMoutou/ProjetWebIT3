@@ -40,9 +40,9 @@ export default {
   name: 'menuperso',
   methods:{
     handleProbeClick: function(e){
-
       //the value of the clicked box
       var val = e.target.attributes[0].value;
+      e.target.className = (e.target.className == "selected" ? "" : "selected");
 
       this.$store.dispatch("updateProbe",val);
     },
@@ -50,6 +50,8 @@ export default {
     handleMeasureClick: function(e){
       //changeB
       var val = e.target.attributes[0].value;
+      e.target.className = (e.target.className == "selected" ? "" : "selected");
+
       this.$store.dispatch("updateMeasure",val);
     },
 
@@ -75,7 +77,7 @@ export default {
     align-items: center;
     margin: 0;
     padding: 0;
-    background: #4CAF50;
+    background: #009688;
     color: #fafafa;
     box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2);
     z-index: 999999999;
@@ -98,12 +100,18 @@ export default {
     display: flex;
     flex-flow: column;
     justify-content: center;
+    background: inherit;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
   }
   .menubox label:hover {
-    background: #43A047;
+    background: #00897B;
+    box-shadow: inset 2px 0 0 rgba(0,0,0,0.05), inset -2px 0 0 rgba(255,255,255,0.1);
+  }
+
+  #menuperso input[type="checkbox"]:checked + label {
+    background: #00897B;
     box-shadow: inset 2px 0 0 rgba(0,0,0,0.05), inset -2px 0 0 rgba(255,255,255,0.1);
   }
 
@@ -114,39 +122,36 @@ export default {
     width: 100%;
     margin: 0;
     padding: 0;
-    background: #4CAF50;
+    background: #009688;
     display: none;
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: center;
   }
 
-  input[type="checkbox"]:checked + label {
-    background-color: #388E3C;
-    box-shadow: inset 2px 0 0 rgba(0,0,0,0.05), inset -2px 0 0 rgba(255,255,255,0.1);
-  }
-
-  input[type="checkbox"]:checked ~ .menulist {
+  #menuperso input[type="checkbox"]:checked ~ .menulist {
     display: flex;
   }
 
-  li{
+  .menulist li{
+    position: relative;
     margin: 0;
     padding: 5px 0;
-    background: #4CAF50;
+    background: #009688;
     list-style: none;
     width: 100%;
     text-align: center;
     box-sizing: border-box;
-    border: 4px solid transparent;
     cursor: pointer;
   }
 
-  li:hover{
-    background-color: #388E3C;
+  .menulist li:hover {
+    background: #00897B;
   }
-  li.selected {
-    border: 4px solid #2E7D32;
+
+  .menulist li.selected {
+    background-color: #00796B;
+    box-shadow: inset 8px 0 0 rgba(0,0,0,0.3);
   }
 
 

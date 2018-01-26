@@ -1,5 +1,6 @@
 <template>
-  <div id="timeperso">
+  <div id="timeperso" :class="divClass">
+    <div class="popup_button" @click=toggleHideDiv></div>
     <p class="title">Time</p>
     <div class="content">
       <p>{{writeTime}}</p>
@@ -10,7 +11,12 @@
 <script>
 export default {
   name: 'timeperso',
-  computed:{
+  data () {
+    return {
+      divClass: ""
+    }
+  },
+  computed: {
     writeTime: function() {
       if (this.$store.state.url.period == "last") {
         var tmp = new Date();
@@ -23,6 +29,12 @@ export default {
         return "From " + start + "\n" + " to " + stop;
       }
     },
+  },
+  methods: {
+    toggleHideDiv: function() {
+      this.divClass = (this.divClass == "" ? "hidden" : "");
+      console.log(this.divClass);
+    }
   }
 }
 </script>
@@ -30,26 +42,33 @@ export default {
 <style>
   #timeperso{
     position: absolute;
-    bottom: 10px;
+    top: calc(100% - 10px);
     left: 15px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: center;
-  	width: 380px;
+    width: 33%;
+  	max-width: 380px;
   	min-height: 60px;
     padding: 5px;
   	background-color: #fafafa;
     border-radius: 3px;
     box-shadow: 1px 2px 4px rgba(0,0,0,0.5);
+    transform: translateY(-100%);
     z-index: 999999;
+  }
+
+  #timeperso.hidden {
+    top: calc(100% - 35px);
+    transform: none;
   }
 
   #timeperso .title {
     margin: 0;
     padding: 4px 8px;
     font-size: 1.2em;
-    color: #4CAF50;
+    color: #009688;
   }
 
   #timeperso .content {
