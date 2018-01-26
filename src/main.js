@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import Vue2Leaflet from "vue2-leaflet"
 
+
 import Menuperso from './components/Menuperso'
 import Mapperso from './components/Mapperso'
 import Chartperso from './components/Chartperso'
@@ -16,6 +17,7 @@ Vue.use(Vuex);
 const VMap = Vue.component('v-map', Vue2Leaflet.Map);
 const VTilelayer = Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
 const Vmarker = Vue.component('v-marker', Vue2Leaflet.Marker);
+
 
 //create a store
 const store = new Vuex.Store({
