@@ -309,11 +309,25 @@ const store = new Vuex.Store({
           .then(result => result.json())
           .then(function (result) {
 
-            console.log(result);
+            console.log("README",result.location);
+            console.log("README",newProbe.location);
+            console.log(newProbe.location.concat(result.location))
 
-            newProbe.location.push(result.location);
-            newProbe.measurements.push(result.measurements);
-            newProbe.rainfall.push(result.rainfall);
+            for (var i = 0; i < result.location.length; i++) {
+              newProbe.location.push(result.location[i]);
+            }
+
+            for (var i = 0; i < result.measurements.length; i++) {
+              newProbe.measurements.push(result.measurements[i]);
+            }
+
+            for (var i = 0; i < result.rainfall.length; i++) {
+              newProbe.rainfall.push(result.rainfall[i]);
+            }
+
+            // newProbe.location = newProbe.location.concat(result.location);
+            // newProbe.location = newProbe.measurements.concat(result.measurements);
+            // newProbe.location = newProbe.rainfall.concat(result.rainfall);
 
             state.dataJson.probes.push(newProbe);
             
@@ -351,8 +365,12 @@ const store = new Vuex.Store({
                 // var len = state.dataJson.probes.length;
 
                 // state.dataJson.probes[len-1] = Object.assign({},state.dataJson.probes[-1],result);
+
+                for (var j = 0; j < result[tmpMeasure].length; j++) {
+                  newProbe[tmpMeasure].push(result[tmpMeasure][j]);
+                }
                 
-                newProbe[tmpMeasure].push(result[tmpMeasure]);
+                // newProbe[tmpMeasure].concat(result[tmpMeasure]);
 
               })
             }  
@@ -434,7 +452,11 @@ const store = new Vuex.Store({
 
               console.log(result);
 
-              state.dataJson.probes[i][measureName].push(result[measureName]);
+              for (var j = 0; j < result[measureName].length; j++) {
+                  state.dataJson.probes[i][measureName].push(result[measureName][j]);
+                }
+
+              // state.dataJson.probes[i][measureName].concat(result[measureName]);
             })
           }
 
@@ -515,8 +537,9 @@ const store = new Vuex.Store({
 
         for (let i = newDataJson.probes.length - 1; i >= 0; i--) {
 
-          while (state.dataJson.probes[i][measureName]>0)
-          {state.dataJson.probes[i][measureName].pop()}
+          var sameProbe = {probeId:newDataJson.probes[i].probeId,location:[],measurements:[],rainfall:[]};
+            state.dataJson.probes.splice(i,1);
+            state.dataJson.probes.push(sameProbe);
         }
 
         // var newData = JSON.parse(JSON.stringify(newDataJson));
@@ -535,41 +558,41 @@ const store = new Vuex.Store({
 
       return new Promise((resolve,reject) =>{
 
-        var newMarkers = state.markers;
+        // var newMarkers = state.markers;
 
-        newMarkers.Probe1.visible = false;
-        newMarkers.Probe2.visible = false;
-        newMarkers.Probe3.visible = false;
-        newMarkers.Probe4.visible = false;
-        newMarkers.Probe5.visible = false;
+        state.markers.Probe1.visible = false;
+        state.markers.Probe2.visible = false;
+        state.markers.Probe3.visible = false;
+        state.markers.Probe4.visible = false;
+        state.markers.Probe5.visible = false;
         
 
         if (state.selMeasure.includes("location")) {
           for (let i = 0; i < state.dataJson.probes.length; i++) {
 
-            //console.log("i",i);
+            console.log("i",i);
             var id = state.dataJson.probes[i].probeId;
-            //console.log("id",id);
-            //console.log(state.dataJson.probes);
-            var lastLocation = state.dataJson.probes[i].location["0"];
+            console.log("id",id);
+            console.log(state.dataJson.probes);
+            var lastLocation = state.dataJson.probes[i].location;
 
-            //console.log("lastLocation",lastLocation);
-            //console.log(state.dataJson.probes);
+            console.log("lastLocation",lastLocation);
+            console.log(state.dataJson.probes);
 
-            console.log(newMarkers,id);
+            //console.log(state.markers,id);
 
-            newMarkers[id].visible = true;
+            state.markers[id].visible = true;
 
             
 
-            newMarkers[id].position.lat = lastLocation.latitude;
-            newMarkers[id].position.lng = lastLocation.longitude;
+            state.markers[id].position.lat = lastLocation["0"].latitude;
+            state.markers[id].position.lng = lastLocation[0].longitude;
           }
         }
 
-        store.commit("SET_MARKERS",newMarkers);
+        // store.commit("SET_MARKERS",newMarkers);
 
-        //console.log(newMarkers.probes);
+        console.log("Markers",state.markers);
 
         console.log("---------- updateMarkers done ----------");
 
