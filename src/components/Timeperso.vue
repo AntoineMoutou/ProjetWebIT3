@@ -10,17 +10,13 @@ export default {
   name: 'timeperso',
   computed:{
     writeTime: function() {
-      if (this.$store.state.period == "last") {
+      if (this.$store.state.url.period == "last") {
         var tmp = new Date();
         return tmp.toString();
       } 
       else {
-        var start = new Date( this.$store.state.param.split("=")[1].split('&')[0]);
-        var stop  = new Date( this.$store.state.param.split("=")[2]);
-
-        console.log(this.$store.state.param);
-        console.log(stop);
-        console.log(start);
+        var start = new Date( this.$store.state.url.param.split("=")[1].split('&')[0]);
+        var stop  = new Date( this.$store.state.url.param.split("=")[2]);
 
         return "From " + start + "\n" + " to " + stop;
       }
