@@ -42,7 +42,7 @@ export default {
 <style>
   #timeperso{
     position: absolute;
-    bottom: 10px;
+    top: calc(100% - 10px);
     left: 15px;
     display: flex;
     flex-flow: column nowrap;
@@ -55,11 +55,13 @@ export default {
   	background-color: #fafafa;
     border-radius: 3px;
     box-shadow: 1px 2px 4px rgba(0,0,0,0.5);
+    transform: translateY(-100%);
     z-index: 999999;
   }
 
   #timeperso.hidden {
-    bottom: -38px;
+    top: calc(100% - 35px);
+    transform: none;
   }
 
   #timeperso .title {

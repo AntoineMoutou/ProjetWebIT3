@@ -110,7 +110,7 @@ export default {
     box-shadow: inset 2px 0 0 rgba(0,0,0,0.05), inset -2px 0 0 rgba(255,255,255,0.1);
   }
 
-  input[type="checkbox"]:checked + label {
+  #menuperso input[type="checkbox"]:checked + label {
     background: #00897B;
     box-shadow: inset 2px 0 0 rgba(0,0,0,0.05), inset -2px 0 0 rgba(255,255,255,0.1);
   }
@@ -129,11 +129,11 @@ export default {
     align-items: center;
   }
 
-  input[type="checkbox"]:checked ~ .menulist {
+  #menuperso input[type="checkbox"]:checked ~ .menulist {
     display: flex;
   }
 
-  li{
+  .menulist li{
     position: relative;
     margin: 0;
     padding: 5px 0;
@@ -145,11 +145,11 @@ export default {
     cursor: pointer;
   }
 
-  li:hover {
+  .menulist li:hover {
     background: #00897B;
   }
 
-  li.selected {
+  .menulist li.selected {
     background-color: #00796B;
     box-shadow: inset 8px 0 0 rgba(0,0,0,0.3);
   }
