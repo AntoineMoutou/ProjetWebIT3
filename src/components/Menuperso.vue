@@ -137,11 +137,17 @@ export default {
     list-style: none;
     width: 100%;
     text-align: center;
+    box-sizing: border-box;
+    border: 4px solid transparent;
     cursor: pointer;
   }
 
   li:hover{
     background-color: #388E3C;
   }
+  li.selected {
+    border: 4px solid #2E7D32;
+  }
+
 
 </style>

@@ -36,8 +36,8 @@ export default {
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: center;
-  	width: 400px;
-  	height: 60px;
+  	width: 380px;
+  	min-height: 60px;
     padding: 5px;
   	background-color: #fafafa;
     border-radius: 3px;

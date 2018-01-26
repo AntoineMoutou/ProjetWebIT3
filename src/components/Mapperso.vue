@@ -49,7 +49,7 @@ export default {
       // this.markers["Probe3"].visible = false;
       // this.markers["Probe4"].visible = false;
       // this.markers["Probe5"].visible = false;
-      
+
 
       // if (this.$store.state.selMeasure.includes("location")) {
       //   for (var i = 0; i < this.$store.state.dataJson.probes.length; i++) {
@@ -77,7 +77,7 @@ export default {
 <style>
   #mapperso {
     width: 100%;
-    height: auto;
+    height: 1px;
     flex-grow: 1;
     z-index: 5;
   }
