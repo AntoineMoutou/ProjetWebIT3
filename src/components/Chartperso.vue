@@ -15,6 +15,9 @@
         <input type="checkbox" name="measure_checkbox" value="wind" id="wind_checkbox">
         <label for="wind_checkbox">Wind</label>
       </form>
+
+      <bigCharty></bigCharty>
+
     </div>
   </div>
 </template>
@@ -22,67 +25,20 @@
 <script>
 
 // CommitChart.js
-import VueCharts from 'vue-chartjs'
-import { Bar, Line } from 'vue-chartjs'
+//import VueCharts from 'vue-chartjs'
+//import { Bar, Line } from 'vue-chartjs'
+
+import BigCharty  from './BigCharty'
 
 
 export default {
   name: 'chartperso',
+
+  components: { BigCharty },
   //extends:Line,
-  mounted(){
+  /*mounted(){
     this.renderChart(data,options)
-  },
-  data(){
-    return {
-      labels : [],
-      datasets : [
-        {
-          label:"Probe1",
-          data : []
-        },
-        {
-          label:"Probe2",
-          data : []
-        },
-        {
-          label:"Probe3",
-          data : []
-        },
-        {
-          label:"Probe4",
-          data : []
-        },
-        {
-          label:"Probe5",
-          data : []
-        }
-<<<<<<< HEAD
-      ]
-    }
-  },
-  computed:{
-    upData:function () {
-
-      if (this.$store.state.period == "interval") {
-
-        for (var i = 0; i < this.$store.state.dataJson.probes.length; i++) {
-        
-          var probeNumber = this.$store.state.dataJson.probes[i].charAT(this.$store.state.dataJson.probes[i].length -1);
-          var selectedMeasure = "";
-
-          this.datasets[probeNumber].data =  this.$store.state.dataJson[i][selectedMeasure];
-          
-        }
-
-      } else {
-
-        for (var i = 0; i < this.datasets.length; i++) {
-          this.datasets[i].data = [];
-        }
-
-      } 
-    }
-  },
+  },*/
   methods: {
     toggleHideDiv: function() {
       this.divClass = (this.divClass == "" ? "hidden" : "");

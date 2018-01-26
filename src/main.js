@@ -3,10 +3,10 @@ import Vuex from 'vuex'
 import Vue2Leaflet from "vue2-leaflet"
 
 
-import Menuperso from './components/Menuperso'
-import Mapperso from './components/Mapperso'
+import Menuperso  from './components/Menuperso'
+import Mapperso   from './components/Mapperso'
 import Chartperso from './components/Chartperso'
-import Timeperso from './components/Timeperso'
+import Timeperso  from './components/Timeperso'
 
 require("./style.css");
 

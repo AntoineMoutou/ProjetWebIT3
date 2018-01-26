@@ -9,7 +9,7 @@
 import Charty from './Charty';
 
 export default {
-  name: 'history',
+  name: 'bigCharty',
   components: { Charty },
   data () {
     return {
@@ -50,17 +50,18 @@ export default {
           var probeNumber = this.$store.state.dataJson.probes[i].charAT(this.$store.state.dataJson.probes[i].length -1);
           var selectedMeasure = "";
 
-          this.datasets[probeNumber].data =  this.$store.state.dataJson[i][selectedMeasure];
+          this.data_array[probeNumber].data =  this.$store.state.dataJson[i][selectedMeasure]; // choose how to add and fill data_array
           
         }
 
       } else {
 
-        for (var i = 0; i < this.datasets.length; i++) {
-          this.datasets[i].data = [];
+        for (var i = 0; i < this.data_array.length; i++) {
+          this.data_array[i].data = [];
         }
 
       }
+    }
   },
 
   mounted: function() {
