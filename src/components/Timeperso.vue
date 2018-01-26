@@ -68,7 +68,7 @@ export default {
     margin: 0;
     padding: 4px 8px;
     font-size: 1.2em;
-    color: #4CAF50;
+    color: #009688;
   }
 
   #timeperso .content {

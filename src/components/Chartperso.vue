@@ -128,7 +128,7 @@ export default {
     margin: 0;
     padding: 4px 8px;
     font-size: 1.2em;
-    color: #4CAF50;
+    color: #009688;
   }
 
   #chartperso .content {
@@ -153,12 +153,15 @@ export default {
 
   .measure_list label {
     margin: 0 4px;
-    padding: 3px;
+    padding: 4px 6px;
+    color: #000;
+    cursor: pointer;
     box-shadow: inset 0 0 0 transparent;
   }
 
   .measure_list input:checked + label {
-    box-shadow: inset 0 -4px 0 #f00;
+    color: #fafafa;
+    box-shadow: inset 0 -25px 0 #607D8B;
   }
 
 </style>
