@@ -68,7 +68,6 @@ export default {
 
         }
       }
-      console.log(this.markers)
       return this.markers;
 
       // return this.$store.state.markers;

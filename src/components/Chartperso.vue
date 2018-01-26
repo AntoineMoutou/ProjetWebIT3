@@ -9,8 +9,8 @@
 <script>
 
 // CommitChart.js
-// import VueCharts from 'vue-chartjs'
-// import { Bar, Line } from 'vue-chartjs'
+import VueCharts from 'vue-chartjs'
+import { Bar, Line } from 'vue-chartjs'
 
 
 export default {
@@ -24,53 +24,49 @@ export default {
       labels : [],
       datasets : [
         {
-          label:"Temperature Probe1",
+          label:"Probe1",
           data : []
         },
         {
-          label:"Temperature Probe2",
+          label:"Probe2",
           data : []
         },
         {
-          label:"Temperature Probe3",
+          label:"Probe3",
           data : []
         },
         {
-          label:"Temperature Probe4",
+          label:"Probe4",
           data : []
         },
         {
-          label:"Temperature Probe5",
-          data : []
-        },
-
-        {
-          label:"Temperature Probe1",
-          data : []
-        },
-        {
-          label:"Temperature Probe2",
-          data : []
-        },
-        {
-          label:"Temperature Probe3",
-          data : []
-        },
-        {
-          label:"Temperature Probe4",
-          data : []
-        },
-        {
-          label:"Temperature Probe5",
+          label:"Probe5",
           data : []
         }
-
-
       ]
     }
   },
   computed:{
-    getdata:function () {
+    upData:function () {
+
+      if (this.$store.state.period == "interval") {
+
+        for (var i = 0; i < this.$store.state.dataJson.probes.length; i++) {
+        
+          var probeNumber = this.$store.state.dataJson.probes[i].charAT(this.$store.state.dataJson.probes[i].length -1);
+          var selectedMeasure = "";
+
+          this.datasets[probeNumber].data =  this.$store.state.dataJson[i][selectedMeasure];
+          
+        }
+
+      } else {
+
+        for (var i = 0; i < this.datasets.length; i++) {
+          this.datasets[i].data = [];
+        }
+
+      } 
       
     }
   }
