@@ -3,24 +3,80 @@
     <div class="popup_button" @click=toggleHideDiv></div>
     <p class="title">Graph</p>
     <div class="content">
-      <button @click=add>Test</button>
     </div>
   </div>
 </template>
 
 <script>
+
+// CommitChart.js
+// import VueCharts from 'vue-chartjs'
+// import { Bar, Line } from 'vue-chartjs'
+
+
 export default {
   name: 'chartperso',
-  data () {
+  //extends:Line,
+  mounted(){
+    this.renderChart(data,options)
+  },
+  data(){
     return {
-      msg: 'Welcome to Your Vue.js App',
+      labels : [],
+      datasets : [
+        {
+          label:"Temperature Probe1",
+          data : []
+        },
+        {
+          label:"Temperature Probe2",
+          data : []
+        },
+        {
+          label:"Temperature Probe3",
+          data : []
+        },
+        {
+          label:"Temperature Probe4",
+          data : []
+        },
+        {
+          label:"Temperature Probe5",
+          data : []
+        },
+
+        {
+          label:"Temperature Probe1",
+          data : []
+        },
+        {
+          label:"Temperature Probe2",
+          data : []
+        },
+        {
+          label:"Temperature Probe3",
+          data : []
+        },
+        {
+          label:"Temperature Probe4",
+          data : []
+        },
+        {
+          label:"Temperature Probe5",
+          data : []
+        }
+
+
+      ],
       divClass: ''
     }
   },
-  methods:{
-    add: function() {
-      this.$store.commit("increment");
-    },
+  computed:{
+    getdata:function () {
+
+    }
+  },
+  methods: {
     toggleHideDiv: function() {
       this.divClass = (this.divClass == "" ? "hidden" : "");
       console.log(this.divClass);
