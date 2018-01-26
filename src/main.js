@@ -431,13 +431,13 @@ const store = new Vuex.Store({
 
               console.log(result);
 
-              newDataJson = Object.assign(newDataJson.probes[i],result);
+              state.dataJson.probes[i][measureName].push(result[measureName]);
             })
           }
 
-          var newData = JSON.parse(JSON.stringify(newDataJson));
+          // var newData = JSON.parse(JSON.stringify(newDataJson));
 
-          store.commit("SET_DATAJSON",newData);
+          // store.commit("SET_DATAJSON",newData);
 
           console.log(state.dataJson.probes);
 
@@ -458,17 +458,24 @@ const store = new Vuex.Store({
         
           //MeasureAll specific case
           if (measureName == "MeasureAll"){
-            newDataJson.probes[i] = {probeId : newDataJson.probes[i].probeId};
+            // newDataJson.probes[i] = {probeId : newDataJson.probes[i].probeId};
+            var sameProbe = {probeId:newDataJson.probes[i].probeId,location:[],measurements:[],rainfall:[]};
+            state.dataJson.probes.splice(i,1);
+            state.dataJson.probes.push(sameProbe);
+
           }
           //general case
           else{
-            delete newDataJson.probes[i][measureName];
+            // delete newDataJson.probes[i][measureName];
+            while (state.dataJson.probes[i][measureName]>0)
+              {state.dataJson.probes[i][measureName].pop()}
+
           }
         }
 
-        var newData = JSON.parse(JSON.stringify(newDataJson));
+        // var newData = JSON.parse(JSON.stringify(newDataJson));
 
-        store.commit("SET_DATAJSON",newData);
+        // store.commit("SET_DATAJSON",newData);
 
         console.log(state.dataJson.probes);
 
@@ -500,13 +507,17 @@ const store = new Vuex.Store({
 
         var newDataJson = state.dataJson;
 
+        
+
         for (let i = newDataJson.probes.length - 1; i >= 0; i--) {
-          newDataJson.probes[i] = {probeId:newDataJson.probes[i].probeId};
+
+          while (state.dataJson.probes[i][measureName]>0)
+          {state.dataJson.probes[i][measureName].pop()}
         }
 
-        var newData = JSON.parse(JSON.stringify(newDataJson));
+        // var newData = JSON.parse(JSON.stringify(newDataJson));
 
-        store.commit("SET_DATAJSON",newData);
+        // store.commit("SET_DATAJSON",newData);
 
         console.log(state.dataJson.probes);
 
