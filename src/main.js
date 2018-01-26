@@ -560,35 +560,35 @@ const store = new Vuex.Store({
 
         // var newMarkers = state.markers;
 
-        state.markers.Probe1.visible = false;
-        state.markers.Probe2.visible = false;
-        state.markers.Probe3.visible = false;
-        state.markers.Probe4.visible = false;
-        state.markers.Probe5.visible = false;
+        // state.markers.Probe1.visible = false;
+        // state.markers.Probe2.visible = false;
+        // state.markers.Probe3.visible = false;
+        // state.markers.Probe4.visible = false;
+        // state.markers.Probe5.visible = false;
         
 
-        if (state.selMeasure.includes("location")) {
-          for (let i = 0; i < state.dataJson.probes.length; i++) {
+        // if (state.selMeasure.includes("location")) {
+        //   for (let i = 0; i < state.dataJson.probes.length; i++) {
 
-            console.log("i",i);
-            var id = state.dataJson.probes[i].probeId;
-            console.log("id",id);
-            console.log(state.dataJson.probes);
-            var lastLocation = state.dataJson.probes[i].location;
+        //     console.log("i",i);
+        //     var id = state.dataJson.probes[i].probeId;
+        //     console.log("id",id);
+        //     console.log(state.dataJson.probes);
+        //     var lastLocation = state.dataJson.probes[i].location;
 
-            console.log("lastLocation",lastLocation);
-            console.log(state.dataJson.probes);
+        //     console.log("lastLocation",lastLocation);
+        //     console.log(state.dataJson.probes);
 
-            //console.log(state.markers,id);
+        //     //console.log(state.markers,id);
 
-            state.markers[id].visible = true;
+        //     state.markers[id].visible = true;
 
             
 
-            state.markers[id].position.lat = lastLocation["0"].latitude;
-            state.markers[id].position.lng = lastLocation[0].longitude;
-          }
-        }
+        //     state.markers[id].position.lat = lastLocation["0"].latitude;
+        // //     state.markers[id].position.lng = lastLocation[0].longitude;
+        //   }
+        // }
 
         // store.commit("SET_MARKERS",newMarkers);
 

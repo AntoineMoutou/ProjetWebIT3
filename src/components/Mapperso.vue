@@ -42,30 +42,36 @@ export default {
   computed:{
     getUpMks:function () { //move it into main.js and create a promise action that updates a global var for markers
 
-      console.log("cool",this.$store.state.selMeasure);
+      console.log("cooooooooooooooooooooooooooooooooooooooooool",this.$store.state.selMeasure);
 
-      // this.markers["Probe1"].visible = false;
-      // this.markers["Probe2"].visible = false;
-      // this.markers["Probe3"].visible = false;
-      // this.markers["Probe4"].visible = false;
-      // this.markers["Probe5"].visible = false;
+      this.markers["Probe1"].visible = false;
+      this.markers["Probe2"].visible = false;
+      this.markers["Probe3"].visible = false;
+      this.markers["Probe4"].visible = false;
+      this.markers["Probe5"].visible = false;
       
 
-      // if (this.$store.state.selMeasure.includes("location")) {
-      //   for (var i = 0; i < this.$store.state.dataJson.probes.length; i++) {
-      //     this.markers[this.$store.state.dataJson.probes[i].probeId].visible = true;
+      if (this.$store.state.selMeasure.includes("location") && (this.$store.state.selProbe.length != 0)) {
+        for (var i = 0; i < this.$store.state.dataJson.probes.length; i++) {
 
+          try{
+            this.markers[this.$store.state.dataJson.probes[i].probeId].visible = true;
 
+          this.markers[this.$store.state.dataJson.probes[i].probeId].position.lat = this.$store.state.dataJson.probes[i].location[0].latitude;
+          this.markers[this.$store.state.dataJson.probes[i].probeId].position.lng = this.$store.state.dataJson.probes[i].location[0].longitude;
+          }
+          catch(e){
+            this.markers[this.$store.state.dataJson.probes[i].probeId].visible = false;
+          }
 
+          
 
-      //     this.markers[this.$store.state.dataJson.probes[i].probeId].position.lat = this.$store.state.dataJson.probes[i].location[0].latitude;
-      //     this.markers[this.$store.state.dataJson.probes[i].probeId].position.lng = this.$store.state.dataJson.probes[i].location[0].longitude;
-      //   }
-      // }
-      // console.log(this.markers)
-      // return this.markers;
+        }
+      }
+      console.log(this.markers)
+      return this.markers;
 
-      return this.$store.state.markers;
+      // return this.$store.state.markers;
     }
   },
   methods:{
