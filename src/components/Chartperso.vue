@@ -4,15 +4,15 @@
     <p class="title">Graph</p>
     <div class="content">
       <form class="measure_list">
-        <input type="checkbox" name="measure_checkbox" value="temperature" id="temperature_checkbox">
-        <label for="temperature_checkbox">Temperature</label>
-        <input type="checkbox" name="measure_checkbox" value="pression" id="pression_checkbox">
+        <input type="checkbox" name="measure_checkbox" value="temperature" id="temperature_checkbox" @click=upSelGraph>
+        <label for="temperature_checkbox" >Temperature</label>
+        <input type="checkbox" name="measure_checkbox" value="pression" id="pression_checkbox" @click=upSelGraph>
         <label for="pression_checkbox">Pression</label>
-        <input type="checkbox" name="measure_checkbox" value="humidity" id="humidity_checkbox">
+        <input type="checkbox" name="measure_checkbox" value="humidity" id="humidity_checkbox" @click=upSelGraph>
         <label for="humidity_checkbox">Humidity</label>
-        <input type="checkbox" name="measure_checkbox" value="luminosity" id="luminosity_checkbox">
+        <input type="checkbox" name="measure_checkbox" value="luminosity" id="luminosity_checkbox" @click=upSelGraph>
         <label for="luminosity_checkbox">Luminosity</label>
-        <input type="checkbox" name="measure_checkbox" value="wind" id="wind_checkbox">
+        <input type="checkbox" name="measure_checkbox" value="wind_speed_avg" id="wind_checkbox" @click=upSelGraph>
         <label for="wind_checkbox">Wind</label>
       </form>
 
@@ -43,6 +43,20 @@ export default {
     toggleHideDiv: function() {
       this.divClass = (this.divClass == "" ? "hidden" : "");
       console.log(this.divClass);
+
+    },
+    upSelGraph: function (e) {
+      console.log(e.target.value);
+      console.log(e.target.checked);
+
+      if (e.target.checked) {
+        this.$store.state.selGraph.push(e.target.value);
+      }
+      else{
+        this.$store.state.selGraph.splice(this.$store.state.selGraph.indexOf(e.target.value),1);
+      }
+
+      console.log(this.$store.state.selGraph);
 
     }
   }

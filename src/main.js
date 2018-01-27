@@ -66,6 +66,7 @@ const store = new Vuex.Store({
     selProbe   : [],
     selMeasure : ["MeasureAll","location","measurements","rainfall"],
     selHistory : "HistoryLast",
+    selGraph   : [],
     
     //url values (with default config)
     url : {

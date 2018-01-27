@@ -15,28 +15,7 @@ export default {
     return {
       property: 'temperature',
       dates_array: [],
-      data_array: [
-        {
-          label:"Probe1",
-          data : []
-        },
-        {
-          label:"Probe2",
-          data : []
-        },
-        {
-          label:"Probe3",
-          data : []
-        },
-        {
-          label:"Probe4",
-          data : []
-        },
-        {
-          label:"Probe5",
-          data : []
-        }
-      ]
+      data_array: []
     }
   },
   methods: {
@@ -45,14 +24,25 @@ export default {
       
       if (this.$store.state.period == "interval") {
 
-        for (var i = 0; i < this.$store.state.dataJson.probes.length; i++) {
+        this.data_array = [];
+
+        for (let i = 0; i < this.$store.state.dataJson.probes.length; i++) {
         
           var probeNumber = this.$store.state.dataJson.probes[i].charAT(this.$store.state.dataJson.probes[i].length -1);
-          var selectedMeasure = "";
+          var tmpLabel = this.$store.state.dataJson.probes[i].probeId;
 
-          this.data_array[probeNumber].data =  this.$store.state.dataJson[i][selectedMeasure]; // choose how to add and fill data_array
-          
+          var selGraph = this.$store.state.selGraph; 
+
+          for (let j = 0; j < selGraph.length; j++) {
+            
+            var tmpData = this.$store.state.dataJson.probes[i].measurements[selGraph[j]];
+            var tmpObj = {label: tmpLabel, data: tmpData};
+
+            this.data_array.push(tmpObj);
+          }          
         }
+
+        console.log("bonjour", this.data_array);
 
       } else {
 
