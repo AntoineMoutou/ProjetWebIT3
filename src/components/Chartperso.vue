@@ -24,12 +24,6 @@
 
 <script>
 
-// CommitChart.js
-//import VueCharts from 'vue-chartjs'
-//import { Bar, Line } from 'vue-chartjs'
-
-import BigCharty  from './BigCharty'
-
 import Charty from './Charty';
 
 
