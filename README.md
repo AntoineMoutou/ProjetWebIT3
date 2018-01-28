@@ -1,2 +1,16 @@
 # ProjetWebIT3
-This is our Project !
+
+Centrale de l'application météo
+
+## Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8080
+npm run dev
+
+# build for production with minification
+npm run build
+```

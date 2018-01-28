@@ -4,19 +4,19 @@
     <p class="title">Graph</p>
     <div class="content">
       <form class="measure_list">
-        <input type="checkbox" name="measure_checkbox" value="temperature" id="temperature_checkbox" @click=upSelGraph>
+        <input type="checkbox" name="measure_checkbox" value="temperature" id="temperature_checkbox" @click=upGraph>
         <label for="temperature_checkbox" >Temperature</label>
-        <input type="checkbox" name="measure_checkbox" value="pression" id="pression_checkbox" @click=upSelGraph>
+        <input type="checkbox" name="measure_checkbox" value="pression" id="pression_checkbox" @click=upGraph>
         <label for="pression_checkbox">Pression</label>
-        <input type="checkbox" name="measure_checkbox" value="humidity" id="humidity_checkbox" @click=upSelGraph>
+        <input type="checkbox" name="measure_checkbox" value="humidity" id="humidity_checkbox" @click=upGraph>
         <label for="humidity_checkbox">Humidity</label>
-        <input type="checkbox" name="measure_checkbox" value="luminosity" id="luminosity_checkbox" @click=upSelGraph>
+        <input type="checkbox" name="measure_checkbox" value="luminosity" id="luminosity_checkbox" @click=upGraph>
         <label for="luminosity_checkbox">Luminosity</label>
-        <input type="checkbox" name="measure_checkbox" value="wind_speed_avg" id="wind_checkbox" @click=upSelGraph>
+        <input type="checkbox" name="measure_checkbox" value="wind_speed_avg" id="wind_checkbox" @click=upGraph>
         <label for="wind_checkbox">Wind</label>
       </form>
 
-      <bigCharty></bigCharty>
+      <charty :dataarray="data_array"></charty>
 
     </div>
   </div>
@@ -30,11 +30,18 @@
 
 import BigCharty  from './BigCharty'
 
+import Charty from './Charty';
+
 
 export default {
   name: 'chartperso',
 
-  components: { BigCharty },
+  components: { Charty },
+  data () {
+    return {
+      data_array: []
+    }
+  },
   //extends:Line,
   /*mounted(){
     this.renderChart(data,options)
@@ -42,12 +49,8 @@ export default {
   methods: {
     toggleHideDiv: function() {
       this.divClass = (this.divClass == "" ? "hidden" : "");
-      console.log(this.divClass);
-
     },
     upSelGraph: function (e) {
-      console.log(e.target.value);
-      console.log(e.target.checked);
 
       if (e.target.checked) {
         this.$store.state.selGraph.push(e.target.value);
@@ -55,10 +58,50 @@ export default {
       else{
         this.$store.state.selGraph.splice(this.$store.state.selGraph.indexOf(e.target.value),1);
       }
+    },
+    upData: function(){
+      
+      if (this.$store.state.url.period == "interval") {
 
-      console.log(this.$store.state.selGraph);
+        this.data_array = [];
 
+        for (let i = 0; i < this.$store.state.dataJson.probes.length; i++) {
+        
+          var tmpLabel1 = this.$store.state.dataJson.probes[i].probeId;
+
+          var selGraph = this.$store.state.selGraph; 
+
+          for (let j = 0; j < selGraph.length; j++) {
+            
+            var tmpData = this.$store.state.dataJson.probes[i].measurements.map( x => x[this.$store.state.selGraph[j]])
+
+            var tmpLabel2 = this.$store.state.selGraph[j];
+
+            var tmpLabel = tmpLabel1 + " "+ tmpLabel2;
+
+            var tmpObj = {label: tmpLabel, data: tmpData};
+
+            this.data_array.push(tmpObj);
+          }
+        }
+      } else {
+
+        for (var i = 0; i < this.data_array.length; i++) {
+          this.data_array[i].data = [];
+        }
+
+      }
+    },
+    upGraph:function (e) {
+      this.upSelGraph(e);
+      this.upData();
     }
+
+  },
+
+  mounted: function() {
+    
+    this.upData();
   }
 }
 </script>

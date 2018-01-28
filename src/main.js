@@ -28,11 +28,11 @@ const store = new Vuex.Store({
     MEASURELIST : ["location","measurements","rainfall"],
     HISTORYLIST : ["HistoryLast","HistoryWeek","HistoryMonth","HistoryYear"],
     PROBESADRESSLIST :{
-      Probe1 : "http://172.31.58.20:3000/",
-      Probe2 : "http://172.31.58.22:3000/",
-      Probe3 : "http://path/to/probe/3/",
-      Probe4 : "http://path/to/probe/4/",
-      Probe5 : "http://path/to/probe/5/",
+      Probe1 : "http://172.31.43.60:3000/",
+      Probe2 : "http://172.31.43.58:3000/",
+      Probe3 : "http://172.31.43.61:3000/",
+      Probe4 : "http://172.31.43.62:3000/",
+      Probe5 : "http://172.31.43.65:3000/",
     },
 
     //the main data object
@@ -71,7 +71,7 @@ const store = new Vuex.Store({
     //url values (with default config)
     url : {
       measure : "",
-      period  : "last",
+      period  : "",
       param   : ""
     }
 	},mutations:{

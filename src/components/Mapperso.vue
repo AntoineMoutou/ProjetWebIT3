@@ -42,8 +42,6 @@ export default {
   computed:{
     getUpMks:function () { //move it into main.js and create a promise action that updates a global var for markers
 
-      console.log("cooooooooooooooooooooooooooooooooooooooooool",this.$store.state.selMeasure);
-
       this.markers["Probe1"].visible = false;
       this.markers["Probe2"].visible = false;
       this.markers["Probe3"].visible = false;

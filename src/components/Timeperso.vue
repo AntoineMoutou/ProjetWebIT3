@@ -33,7 +33,6 @@ export default {
   methods: {
     toggleHideDiv: function() {
       this.divClass = (this.divClass == "" ? "hidden" : "");
-      console.log(this.divClass);
     }
   }
 }

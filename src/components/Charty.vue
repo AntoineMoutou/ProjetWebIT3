@@ -2,35 +2,22 @@
 export default {
   extends: VueChartJs.Line,
   name: 'charty',
-  props: ['datesarray','property','dataarray'],
+  props: ['dataarray'],
   methods: {
     render: function() {
-      let dataset = {
-              label: this.property,
-              data: this.dataarray,
-            }
-
+      let datasets = {
+              label: "graph",
+              data: this.dataarray
+            };
       let options = {
-          labels: this.datesarray,
-          datasets: [dataset]
-        }
+          labels: "",
+          datasets: this.dataarray
+        };
 
-      this.renderChart(options, {responsive: true, maintainAspectRatio: false})
+      this.renderChart(options,{responsive: true, maintainAspectRatio: true})
     }
   },
   watch: {
-    'property': {
-      handler: function () {
-        this.render();
-      },
-      deep: true
-    },
-    'datesarray': {
-      handler: function () {
-        this.render();
-      },
-      deep: true
-    },
     'dataarray': {
       handler: function () {
         this.render();
